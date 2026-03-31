@@ -1,0 +1,32 @@
+{
+  "name": "obsidian-memory-layer-mcp",
+  "version": "1.0.0",
+  "description": "Long-term memory for AI coding assistants, powered by Obsidian",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/honam867/obsidian-memory-layer-mcp.git"
+  },
+  "keywords": ["mcp", "obsidian", "memory", "ai", "opencode", "claude-code"],
+  "author": "honam867",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "obsidian-memory-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "gray-matter": "^4.0.3",
+    "glob": "^11.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
