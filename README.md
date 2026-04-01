@@ -4,12 +4,26 @@
 
 AI coding assistants (opencode, Claude Code, Cursor...) forget everything when a session ends. This MCP server gives them a persistent brain — storing decisions, learnings, progress, and session history as Obsidian markdown files you can browse, search, and visualize with Graph View.
 
+![Obsidian Memory Layer MCP architecture](./memory-layer.png)
+
+*Architecture overview: MCP tool calls are translated into Obsidian-friendly markdown files, which then become part of the vault and knowledge graph.*
+
 ```text
 AI Agent <== MCP Protocol ==> obsidian-memory-layer-mcp <== File I/O ==> Obsidian Vault
                                                                               |
                                                                     Open in Obsidian app
                                                                     to see Graph View
 ```
+
+## Why this exists
+
+| Problem | Solution |
+|---------|----------|
+| New session = amnesia. Agent forgets what you were working on | `session_start` loads full project context automatically |
+| Repeating the same decisions every session | Decisions are saved and recalled before re-deciding |
+| No way to track progress across sessions | Progress file updated automatically per session |
+| Agent makes the same mistake twice | Learnings are searchable so the agent can check before debugging |
+| Can't see the big picture of your AI knowledge | Obsidian Graph View shows all connections |
 
 ## Quick Start — Let your agent set it up
 
