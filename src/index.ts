@@ -166,18 +166,15 @@ server.tool(
 // ============================================================
 server.tool(
   "session_start",
-  `Bắt đầu một session làm việc mới. GỌI NÀY ĐẦU TIÊN khi bắt đầu chat.
-Sẽ tự động:
-1. Load toàn bộ context của project
-2. Hiển thị progress hiện tại
-3. Hiển thị TODOs còn mở
-4. Tạo session log mới`,
+  `Bắt đầu một session làm việc mới. Trả về brief summary (~300 tokens).
+Dùng project_status nếu cần xem chi tiết đầy đủ.
+Dùng memory_recall để tìm kiếm cụ thể.`,
   {
     project: z.string().describe("Tên project đang làm việc"),
     goal: z.string().optional().describe("Mục tiêu của session này"),
   },
   async ({ project, goal }) => {
-    const context = await vault.loadContext(project);
+    const context = await vault.loadContextBrief(project);
     const sessionId = await vault.startSession(project, goal);
 
     return {
@@ -236,12 +233,12 @@ Sẽ lưu lại:
 // ============================================================
 server.tool(
   "project_status",
-  "Xem tổng quan trạng thái một project: context, progress, TODOs, recent sessions.",
+  "Xem CHI TIẾT ĐẦY ĐỦ trạng thái một project: context, progress, TODOs, recent sessions. Chỉ gọi khi cần xem detail.",
   {
     project: z.string().describe("Tên project"),
   },
   async ({ project }) => {
-    const context = await vault.loadContext(project);
+    const context = await vault.loadContextFull(project);
     return {
       content: [{ type: "text" as const, text: context }],
     };

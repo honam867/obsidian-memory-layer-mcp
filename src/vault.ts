@@ -474,11 +474,43 @@ export class VaultManager {
 
   // --- Context Loading (for session start) ---
 
-  async loadContext(project: string): Promise<string> {
+  async loadContextBrief(project: string): Promise<string> {
     const status = await this.getProjectStatus(project);
     const parts: string[] = [];
 
-    parts.push(`# 🧠 Memory Context: ${project}`);
+    parts.push(`# Memory: ${project}`);
+    parts.push("");
+
+    // Only the project description section (first ~10 lines of context)
+    if (status.context) {
+      const lines = status.context.split("\n").filter((l) => l.trim());
+      parts.push(lines.slice(0, 12).join("\n"));
+      parts.push("");
+    }
+
+    // Only last session title
+    if (status.recentSessions.length > 0) {
+      parts.push(`**Last session:** ${status.recentSessions[0]}`);
+    }
+
+    // Open TODOs (just titles)
+    if (status.openTodos.length > 0) {
+      parts.push(`**Open TODOs:** ${status.openTodos.slice(0, 5).join(", ")}`);
+    }
+
+    // Stats as one line
+    parts.push(`**Stats:** ${status.decisionCount} decisions, ${status.learningCount} learnings, ${status.openTodos.length} TODOs`);
+    parts.push("");
+    parts.push("Use `project_status` for full details. Use `memory_recall` to search specific topics.");
+
+    return parts.join("\n");
+  }
+
+  async loadContextFull(project: string): Promise<string> {
+    const status = await this.getProjectStatus(project);
+    const parts: string[] = [];
+
+    parts.push(`# Memory Context: ${project}`);
     parts.push("");
 
     if (status.context) {
